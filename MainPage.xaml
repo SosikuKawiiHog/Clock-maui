@@ -1,14 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Clock.MainPage">
+             x:Class="Clock.MainPage"
+             BackgroundColor="Black">
     <ContentPage.Resources>
         <Style x:Key="ClockStyle" TargetType="Label">
             <Setter Property="FontSize" Value="48"/>
+            <Setter Property="FontFamily" Value="Courier New, monospace"/>
+            <Setter Property="TextColor" Value="LimeGreen"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
         </Style>
     </ContentPage.Resources>
-    <VerticalStackLayout>
+    <Grid>
         <Label x:Name="TimeLabel" Text="00:00:00" Style="{StaticResource ClockStyle}"/>
-    </VerticalStackLayout>
-
+    </Grid>
 </ContentPage>
