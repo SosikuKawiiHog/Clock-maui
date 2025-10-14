@@ -4,17 +4,41 @@
              x:Class="Clock.MainPage"
              BackgroundColor="Black">
     <ContentPage.Resources>
-        <Style x:Key="ClockStyle" TargetType="Label">
-            <Setter Property="FontSize" Value="48"/>
-            <Setter Property="FontFamily" Value="Courier New, monospace"/>
-            <Setter Property="TextColor" Value="LimeGreen"/>
-            <Setter Property="HorizontalOptions" Value="Center"/>
-            <Setter Property="VerticalOptions" Value="Center"/>
-            <Setter Property="HorizontalTextAlignment" Value="Center"/>
-            <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Style TargetType="BoxView">
+            <Setter Property="Color" Value="LimeGreen"/>
+            <Setter Property="CornerRadius" Value="2"/>
         </Style>
     </ContentPage.Resources>
     <Grid>
-        <Label x:Name="TimeLabel" Text="00:00:00" Style="{StaticResource ClockStyle}"/>
+        <Frame BorderColor="DarkGreen" CornerRadius="15" Padding="20">
+            <Grid ColumnDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto"
+                  ColumnSpacing="10"
+                  VerticalOptions="Center"
+                  HorizontalOptions="Center">
+                <Grid x:Name="HourTensDigit" ColumnDefinitions="10,4,10" RowDefinitions="15,10,15,10,15" />
+
+                <Grid x:Name="HourOnesDigit" Grid.Column="1" ColumnDefinitions="10,4,10" RowDefinitions="15,10,15,10,15" />
+
+                <Grid Grid.Column="2" RowDefinitions="20,10,10,10,20" VerticalOptions="Center" HeightRequest="105">
+                    <BoxView Grid.Row="1" HeightRequest="8" WidthRequest="8" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <BoxView Grid.Row="3" HeightRequest="8" WidthRequest="8" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </Grid>
+                
+                <Grid x:Name="MinuteTensDigit" Grid.Column="3" ColumnDefinitions="10,4,10" RowDefinitions="15,10,15,10,15" />
+            
+                <Grid x:Name="MinuteOnesDigit" Grid.Column="4" ColumnDefinitions="10,4,10" RowDefinitions="15,10,15,10,15" />
+
+                <Grid Grid.Column="5"  RowDefinitions="20,10,10,10,20" VerticalOptions="Center" HeightRequest="105">
+                    <BoxView Grid.Row="1" HeightRequest="8" WidthRequest="8" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <BoxView Grid.Row="3" HeightRequest="8" WidthRequest="8" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </Grid>
+
+                <Grid x:Name="SecondTensDigit" Grid.Column="6" ColumnDefinitions="10,4,10" RowDefinitions="15,10,15,10,15" />
+
+                <Grid x:Name="SecondOnesDigit" Grid.Column="7" ColumnDefinitions="10,4,10" RowDefinitions="15,10,15,10,15" />
+            </Grid>
+
+
+        </Frame>
     </Grid>
 </ContentPage>
