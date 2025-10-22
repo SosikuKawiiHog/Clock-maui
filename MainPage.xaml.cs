@@ -4,27 +4,14 @@ namespace Clock
 {
     public partial class MainPage : ContentPage
     {
-        private DateTime _lastSyncTime;
-        private CancellationTokenSource? _cts;
-
-        private readonly Dictionary<int, bool[]> _digitSegment = new()
-        {
-            {0, new bool[] {true, true, true, true, true, true, false} },
-            {1, new bool[] {false, true, true, false, false, false, false} },
-            {2, new bool[] {true, true, false, true, true, false, true } },
-            {3, new bool[] {true, true, true, true, false, false, true} },
-            {4, new bool[] {false, true, true, false, false, true, true} },
-            {5, new bool[] {true, false, true, true, false, true, true} },
-            {6, new bool[] {true, false, true, true, true, true, true} },
-            {7, new bool[] {true, true, true, false, false, false, false} },
-            {8, new bool[] {true, true, true, true, true, true, true} },
-            {9, new bool[] {true, true, true, true, false, true, true} }
-        };
+        private ClockLogic _clockLogic;
         public MainPage()
         {
             InitializeComponent();
+            _clockLogic = new ClockLogic(UpdateTimeDisplay);
+
             InitializeDigitGrids();
-            InitializeClock();
+            _clockLogic.InitializeClock();
         }
         private void InitializeDigitGrids()
         {
@@ -84,51 +71,8 @@ namespace Clock
             digitGrid.Children.Add(segF);
             digitGrid.Children.Add(segG);
         }
-        private void InitializeClock()
-        {
-            SyncWithSys();
-            StartClock();
-        }
 
-        private void StartClock()
-        {
-            _cts = new CancellationTokenSource();
-            _ = RunClock(_cts.Token);
-        }
 
-        private async Task RunClock(CancellationToken token)
-        {
-            UpdateTimeDisplay(_lastSyncTime);
-            while (!token.IsCancellationRequested)
-            {
-                try
-                {
-                    await Task.Delay(1000, token);
-
-                    var now = DateTime.Now;
-                    if (now.Hour != _lastSyncTime.Hour)
-                    {
-                        SyncWithSys();
-                    }
-                    else
-                    {
-                        _lastSyncTime = _lastSyncTime.AddSeconds(1);
-                        UpdateTimeDisplay(_lastSyncTime);
-                    }
-                }
-                catch (OperationCanceledException)
-                {
-                    break;
-                }
-            }
-            
-        }
-
-        private void SyncWithSys()
-        {
-            var time = DateTime.Now;
-            UpdateTimeDisplay(time);
-        }
 
         private void UpdateTimeDisplay(DateTime time)
         {
@@ -144,9 +88,10 @@ namespace Clock
 
         private void UpdateDigit(Grid digitGrid, int digit)
         {
-            if (!_digitSegment.ContainsKey(digit)) return;
+            var digitSegments = _clockLogic.GetDigitSegments();
+            if (!digitSegments.ContainsKey(digit)) return;
             var segments = digitGrid.Children;
-            var activeSegments = _digitSegment[digit];
+            var activeSegments = digitSegments[digit];
             int index = 0;
             foreach (var segment in segments)
             {
